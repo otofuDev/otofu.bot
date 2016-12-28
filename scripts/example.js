@@ -4,7 +4,6 @@ const help = {
     '`bot ping` pong を返す',
     '`bot count` 数字を数える',
     '毎朝7:30に「Good Morning!!」とつぶやく',
-    'HTTP で GET /sayfoo を叩くと「foo!」とつぶやく',
   ],
 };
 
@@ -24,11 +23,6 @@ module.exports = (bot) => {
       msg.send('Count: ' + count);
       bot.storage.set('count', count);
     });
-  });
-
-  bot.http.get('/sayfoo', (req, res) => {
-    bot.send('foo!');
-    res.send(200);
   });
 
 };
