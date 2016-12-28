@@ -1,0 +1,27 @@
+{
+  "name": "otofu.bot",
+  "version": "0.0.1",
+  "description": "otofu slack bot",
+  "private": true,
+  "main": "bot.js",
+  "scripts": {
+    "start": "nf start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/0tofu/otofu.bot.git"
+  },
+  "author": "Motoki Kobayashi",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/0tofu/otofu.bot#readme",
+  "devDependencies": {
+    "foreman": "^2.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "shrike": "^0.5.0",
+    "shrike-utils": "^0.3.0"
+  }
+}
