@@ -7,6 +7,8 @@ const bot = new Bot(process.env.SLACK_TOKEN, {
   default_channel: process.env.SLACK_DEFAULT_CHANNEL,
 });
 
+bot.storage = new utils.RedisStorage(process.env.REDIS_URL);
+
 bot.jobs = new utils.JobList();
 
 bot.http = express();
