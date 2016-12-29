@@ -18,12 +18,12 @@ const help = {
  * 遅延情報収集対象の路線.
  */
 const lineLists = [
-  {name: '阪急京都本線', url: 'http://transit.yahoo.co.jp/traininfo/detail/306/0/'},
   {name: '大阪環状線', url: 'http://transit.yahoo.co.jp/traininfo/detail/263/0/'},
   {name: 'JR京都線', url: 'http://transit.yahoo.co.jp/traininfo/detail/267/0/'},
   {name: 'JR琵琶湖線', url: 'http://transit.yahoo.co.jp/traininfo/detail/266/0/'},
-  {name: '大阪市営御堂筋線', url: 'http://transit.yahoo.co.jp/traininfo/detail/321/0/'},
   {name: '大阪市営長堀鶴見緑地線', url: 'http://transit.yahoo.co.jp/traininfo/detail/327/0/'},
+  {name: '名古屋市営上飯田線', url: 'http://transit.yahoo.co.jp/traininfo/detail/400/0/'},
+  {name: '名古屋市営名城線', url: 'http://transit.yahoo.co.jp/traininfo/detail/241/0/'},
 ];
 
 /**
