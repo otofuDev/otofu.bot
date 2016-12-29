@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "shrike": "^0.5.0",
-    "shrike-utils": "^0.3.0"
+    "shrike-utils": "^0.3.0",
+    "cheerio-httpcli": "^0.6.9",
+    "co": "^4.6.0"
   }
 }
