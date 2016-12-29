@@ -1,3 +1,4 @@
+'use strict';
 const Bot = require('shrike');
 const utils = require('shrike-utils');
 
