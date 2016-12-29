@@ -1,4 +1,3 @@
-'use strict';
 /**
  * 電車の遅延情報を取得するスクリプト.
  */
@@ -11,7 +10,7 @@ const client = require('cheerio-httpcli');
 const help = {
   title: '電車遅延情報通知',
   description: [
-    '`bot 遅延` 現時点での電車の遅延情報を通知する'
+    '`bot 遅延` 現時点での電車の遅延情報を通知する',
   ],
 };
 
@@ -64,7 +63,7 @@ const trainDelay = function(line) {
       title: '[' + line.name + '] の遅延情報です',
       title_link: line.url,
       text: '[' + trainStatus  + ']：' + trainMessage,
-    }
+    };
   });
 };
 
