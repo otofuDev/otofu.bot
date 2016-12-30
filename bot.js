@@ -12,5 +12,7 @@ bot.jobs = new utils.JobList();
 bot.loadDir('./scripts');
 
 bot.start().then(() => {
-  bot.jobs.startAll();
+  if (process.env.NODE_ENV === 'production') {
+    bot.jobs.startAll();
+  }
 });

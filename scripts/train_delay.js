@@ -2,7 +2,7 @@
  * 電車の遅延情報を取得するスクリプト.
  */
 const co = require('co');
-const client = require('cheerio-httpcli');
+const YahooTransit = require('../lib/YahooTransit');
 
 /**
  * BOTで `help` とタイプした時に出力されるメッセージ.
@@ -32,39 +32,16 @@ const lineLists = [
 const TRAIN_DELAY_KEY = process.env.TRAIN_DELAY_KEY || 'train_delay';
 
 /**
- * 引数 line で指定した路線の遅延情報を取得する関数.
  *
- * @param {object} line 路線情報オブジェクト.
- * @returns {object} 遅延情報(slack attachments).
  */
-const trainDelay = function(line) {
-  return co(function*() {
-    const result = yield client.fetch(line.url);
-    let color = 'danger';
-    let trainStatus = 'ERROR';
-    let trainMessage = '';
-
-    if (!('error' in result) && ('$' in result)) {
-      const $ = result.$;
-      trainStatus = $('#mdServiceStatus dt').text().replace($('#mdServiceStatus dt span').text(), '').replace(/\n/g, '');
-      trainMessage = $('#mdServiceStatus dd').text().replace(/\n/g, '');
-
-      color = 'good';
-      if (trainStatus !== '平常運転') {
-        color = 'danger';
-      } else if (trainMessage !== '現在､事故･遅延に関する情報はありません。') {
-        color = 'warning';
-      }
-    }
-
-    return {
-      fallback: '遅延情報(' + line.name + ')：' + trainStatus,
-      color: color,
-      title: '[' + line.name + '] の遅延情報です',
-      title_link: line.url,
-      text: '[' + trainStatus  + ']：' + trainMessage,
-    };
-  });
+const setAttachments = (lineStatus) => {
+  return {
+    fallback: lineStatus.name + '：[' + lineStatus.status + ']',
+    color: lineStatus.color,
+    title: '[' + lineStatus.name + ']の運行状況',
+    title_link: lineStatus.url,
+    text: '[' + lineStatus.status + ']：' + lineStatus.message,
+  }
 };
 
 /**
@@ -76,25 +53,27 @@ module.exports = (bot) => {
   bot.respond(/遅延/, (msg) => {
     for (let line of lineLists) {
       co(function*() {
-        const attachments = yield trainDelay(line);
+        const lineStatus = yield YahooTransit.getStatus(line.url);
+        const attachments = setAttachments(lineStatus);
         msg.send({attachments: [attachments]});
-
       });
     }
   });
 
   // 路線リストの遅延情報を取得するcronジョブ.
-  bot.jobs.add('0 */15 6-22 * * 1-5', () => {
+  bot.jobs.add('0 */10 6-22 * * 1-5', () => {
     for (let line of lineLists) {
       const lineNumber = line.url.replace(/[^\d]/g, '');
       const redis_key = TRAIN_DELAY_KEY + lineNumber;
 
       co(function*() {
-        const attachments = yield trainDelay(line);
+        const lineStatus = yield YahooTransit.getStatus(line.url);
 
         const beforeTrainStatus = yield bot.storage.get(redis_key);
-        if (beforeTrainStatus !== attachments.text) {
-          bot.storage.set(redis_key, attachments.text);
+        if (beforeTrainStatus !== lineStatus.message) {
+          bot.storage.set(redis_key, lineStatus.message);
+
+          const attachments = setAttachments(lineStatus);
           bot.send({attachments: [attachments]}, 'delay');
         }
       });
