@@ -4,6 +4,9 @@
   "description": "otofu slack bot",
   "private": true,
   "main": "bot.js",
+  "engines": {
+    "node": "7"
+  },
   "scripts": {
     "start": "nf start",
     "test": "echo \"Error: no test specified\" && exit 1"
