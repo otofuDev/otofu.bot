@@ -36,3 +36,8 @@ $ docker run --rm -it --name redis -p 6379:6379 redis:alpine
 ```console
 $  npm start
 ```
+
+## BOT作成時の参考サイト
+
+- Qiita…http://qiita.com/hoto17296/items/dbcc4bc62cc53299edb3
+- github…https://github.com/hotogoma/tsukiko2
