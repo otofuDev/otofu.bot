@@ -41,7 +41,7 @@ const setAttachments = (lineStatus) => {
     title: '[' + lineStatus.name + ']の運行状況',
     title_link: lineStatus.url,
     text: '[' + lineStatus.status + ']：' + lineStatus.message,
-  }
+  };
 };
 
 /**
