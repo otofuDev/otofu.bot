@@ -61,7 +61,7 @@ module.exports = (bot) => {
   });
 
   // 路線リストの遅延情報を取得するcronジョブ.
-  bot.jobs.add('0 */10 6-22 * * 1-5', () => {
+  bot.jobs.add('0 */10 6-9,17-20 * * 1-5', () => {
     for (let line of lineLists) {
       const lineNumber = line.url.replace(/[^\d]/g, '');
       const redis_key = TRAIN_DELAY_KEY + lineNumber;
