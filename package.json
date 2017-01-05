@@ -25,7 +25,6 @@
     "cheerio-httpcli": "^0.6.9",
     "co": "^4.6.0",
     "file-type": "^4.0.0",
-    "gyazo-api": "^0.3.1",
     "nightmare": "^2.9.1",
     "request": "^2.79.0",
     "shrike": "^0.5.0",
