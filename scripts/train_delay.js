@@ -51,22 +51,22 @@ const setAttachments = (lineStatus) => {
 module.exports = (bot) => {
   // BOTに対し `遅延` とメッセージを送信すると路線リストの遅延情報を返す.
   bot.respond(/遅延/, (msg) => {
-    for (let line of lineLists) {
-      co(function*() {
+    co(function*() {
+      for (let line of lineLists) {
         const lineStatus = yield YahooTransit.getStatus(line.url);
         const attachments = setAttachments(lineStatus);
         msg.send({attachments: [attachments]});
-      });
-    }
+      }
+    });
   });
 
   // 路線リストの遅延情報を取得するcronジョブ.
   bot.jobs.add('0 */10 6-9,17-20 * * 1-5', () => {
-    for (let line of lineLists) {
-      const lineNumber = line.url.replace(/[^\d]/g, '');
-      const redis_key = TRAIN_DELAY_KEY + lineNumber;
+    co(function*() {
+      for (let line of lineLists) {
+        const lineNumber = line.url.replace(/[^\d]/g, '');
+        const redis_key = TRAIN_DELAY_KEY + lineNumber;
 
-      co(function*() {
         const lineStatus = yield YahooTransit.getStatus(line.url);
 
         const beforeTrainStatus = yield bot.storage.get(redis_key);
@@ -76,8 +76,8 @@ module.exports = (bot) => {
           const attachments = setAttachments(lineStatus);
           bot.send({attachments: [attachments]}, 'delay');
         }
-      });
-    }
+      }
+    });
   });
 };
 
