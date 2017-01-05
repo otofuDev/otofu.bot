@@ -4,7 +4,6 @@
     "ecmascript"
   ],
   "plugins": {
-    "doc_comments": {},
     "node": {},
     "es_modules": {}
   }
