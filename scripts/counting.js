@@ -11,7 +11,7 @@ const CountLists = [
  */
 const setAttachments = (countInfo) => {
   return {
-    fallback: countInfo.counter_name,
+    fallback: countInfo.counter_name + ' ' + countInfo.counter + '日',
     title: countInfo.counter_name,
     title_link: countInfo.counter_url,
     image_url: countInfo.image,
