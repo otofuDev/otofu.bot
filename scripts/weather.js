@@ -6,6 +6,19 @@ const WeatherLists = [
 ];
 
 /**
+ *
+ */
+const setAttachments = (weatherInfo) => {
+  return {
+    fallback: '天気予報[' + weatherInfo.area + ']：' + weatherInfo.weather,
+    title: '[' + weatherInfo.area + '] ' + weatherInfo.date + 'の天気',
+    title_link: weatherList.url,
+    text: weatherInfo.weather + '　最高気温：' + weatherInfo.temp_high + '℃　最低気温：' + weatherInfo.temp_low + '℃',
+    image_url: weatherInfo.image,
+  };
+};
+
+/**
  * BOTスクリプト本体.
  * @param {object} bot shrikeボット.
  */
@@ -15,13 +28,7 @@ module.exports = (bot) => {
     for (let weatherList of WeatherLists) {
       co(function*() {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, 'today');
-        const attachments = {
-          fallback: '天気予報[' + weatherInfo.area + ']：' + weatherInfo.weather,
-          title: '[' + weatherInfo.area + '] ' + weatherInfo.date + 'の天気',
-          title_link: weatherList.url,
-          text: weatherInfo.weather + '　最高気温：' + weatherInfo.temp_high + '℃　最低気温：' + weatherInfo.temp_low + '℃',
-          image_url: weatherInfo.image,
-        };
+        const attachments = setAttachments(weatherInfo);
         msg.send({attachments: [attachments]});
       });
     }
@@ -32,13 +39,7 @@ module.exports = (bot) => {
     for (let weatherList of WeatherLists) {
       co(function*() {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, 'today');
-        const attachments = {
-          fallback: '天気予報[' + weatherInfo.area + ']：' + weatherInfo.weather,
-          title: '[' + weatherInfo.area + '] ' + weatherInfo.date + 'の天気',
-          title_link: weatherList.url,
-          text: weatherInfo.weather + '　最高気温：' + weatherInfo.temp_high + '℃　最低気温：' + weatherInfo.temp_low + '℃',
-          image_url: weatherInfo.image,
-        };
+        const attachments = setAttachments(weatherInfo);
         bot.send({attachments: [attachments]}, 'weather');
       });
     }
