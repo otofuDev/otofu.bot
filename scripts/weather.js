@@ -8,11 +8,11 @@ const WeatherLists = [
 /**
  *
  */
-const setAttachments = (weatherInfo) => {
+const setAttachments = (weatherInfo, url) => {
   return {
     fallback: '天気予報[' + weatherInfo.area + ']：' + weatherInfo.weather,
     title: '[' + weatherInfo.area + '] ' + weatherInfo.date + 'の天気',
-    title_link: weatherList.url,
+    title_link: url,
     text: weatherInfo.weather + '　最高気温：' + weatherInfo.temp_high + '℃　最低気温：' + weatherInfo.temp_low + '℃',
     image_url: weatherInfo.image,
   };
@@ -28,7 +28,7 @@ module.exports = (bot) => {
     for (let weatherList of WeatherLists) {
       co(function*() {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, 'today');
-        const attachments = setAttachments(weatherInfo);
+        const attachments = setAttachments(weatherInfo, weatherList.url);
         msg.send({attachments: [attachments]});
       });
     }
@@ -39,7 +39,7 @@ module.exports = (bot) => {
     for (let weatherList of WeatherLists) {
       co(function*() {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, 'today');
-        const attachments = setAttachments(weatherInfo);
+        const attachments = setAttachments(weatherInfo, weatherList.url);
         bot.send({attachments: [attachments]}, 'weather');
       });
     }
