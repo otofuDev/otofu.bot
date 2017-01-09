@@ -9,20 +9,20 @@ const WeatherLists = [
 /**
  *
  */
-const setAttachments = (weatherInfo, url, pattern) => {
+const setAttachments = (weatherInfo, pattern) => {
   if (pattern === 'weekly') {
     return {
       fallback: '週の天気',
       text: '週の天気',
-      image_url: weatherInfo.image,
+      image_url: weatherInfo.capture,
     };
   }
   return {
     fallback: '天気予報[' + weatherInfo.area + ']：' + weatherInfo.weather + '\n' + '最高:' + weatherInfo.temp_high + '℃　最低:' + weatherInfo.temp_low + '℃　降水:' + weatherInfo.rainFall + '％',
     title: '[' + weatherInfo.area + '] ' + weatherInfo.date + 'の天気',
-    title_link: url,
+    title_link: weatherInfo.url,
     text: weatherInfo.weather + '　最高気温：' + weatherInfo.temp_high + '℃　最低気温：' + weatherInfo.temp_low + '℃　降水確率：' + weatherInfo.rainFall + '％',
-    image_url: weatherInfo.image,
+    image_url: weatherInfo.capture,
   };
 };
 
@@ -35,6 +35,7 @@ module.exports = (bot) => {
   bot.respond(/^(?:天気|weather) (.\S+)\s?(今日|today|明日|tomorrow|週|week|weekly)?/i, (msg) => {
     const area = msg.match[1];
     let pattern = msg.match[2] || 'today';
+    let as_user = false;
 
     const filterWeatherList = WeatherLists.filter((item) => {
       return (item.name == area);
@@ -50,13 +51,14 @@ module.exports = (bot) => {
       pattern = 'tomorrow';
     } else if (pattern === '週' || pattern === 'week') {
       pattern = 'weekly';
+      as_user = true;
     }
 
     for (let weatherList of filterWeatherList) {
       co(function*() {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, pattern);
-        const attachments = setAttachments(weatherInfo, weatherList.url, pattern);
-        msg.send({attachments: [attachments]});
+        const attachments = setAttachments(weatherInfo, pattern);
+        msg.send({as_user: as_user, username: 'weathernews', icon_url: weatherInfo.img,  attachments: [attachments]});
       });
     }
   });
@@ -66,7 +68,7 @@ module.exports = (bot) => {
     for (let weatherList of WeatherLists) {
       co(function*() {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, 'today');
-        const attachments = setAttachments(weatherInfo, weatherList.url, 'today');
+        const attachments = setAttachments(weatherInfo, 'today');
         const channel = weatherList.channel || bot.default_channel.name;
         bot.send({attachments: [attachments]}, channel);
       });
