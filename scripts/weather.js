@@ -21,7 +21,7 @@ const setAttachments = (weatherInfo, url, pattern) => {
     fallback: '天気予報[' + weatherInfo.area + ']：' + weatherInfo.weather,
     title: '[' + weatherInfo.area + '] ' + weatherInfo.date + 'の天気',
     title_link: url,
-    text: weatherInfo.weather + '　最高気温：' + weatherInfo.temp_high + '℃　最低気温：' + weatherInfo.temp_low + '℃',
+    text: weatherInfo.weather + '　最高気温：' + weatherInfo.temp_high + '℃　最低気温：' + weatherInfo.temp_low + '℃　降水確率：' + weatherInfo.rainFall + '％',
     image_url: weatherInfo.image,
   };
 };
