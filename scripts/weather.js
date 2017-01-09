@@ -58,7 +58,7 @@ module.exports = (bot) => {
       co(function*() {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, pattern);
         const attachments = setAttachments(weatherInfo, pattern);
-        msg.send({as_user: as_user, username: 'weathernews', icon_url: weatherInfo.img,  attachments: [attachments]});
+        msg.send({as_user: as_user, username: 'weathernews', icon_url: weatherInfo.img, attachments: [attachments]});
       });
     }
   });
@@ -70,7 +70,7 @@ module.exports = (bot) => {
         const weatherInfo = yield YahooWeather.getWeather(weatherList.url, 'today');
         const attachments = setAttachments(weatherInfo, 'today');
         const channel = weatherList.channel || bot.default_channel.name;
-        bot.send({attachments: [attachments]}, channel);
+        bot.send({as_user: false, username: 'weathernews', icon_url: weatherInfo.img, attachments: [attachments]}, channel);
       });
     }
   });
