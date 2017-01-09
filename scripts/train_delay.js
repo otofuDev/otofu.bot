@@ -55,7 +55,7 @@ module.exports = (bot) => {
       for (let line of lineLists) {
         const lineStatus = yield YahooTransit.getStatus(line.url);
         const attachments = setAttachments(lineStatus);
-        msg.send({attachments: [attachments]});
+        msg.send({as_user: false, username: '運行状況', icon_emoji: ':train:', attachments: [attachments]});
       }
     });
   });
@@ -74,7 +74,7 @@ module.exports = (bot) => {
           bot.storage.set(redis_key, lineStatus.message);
 
           const attachments = setAttachments(lineStatus);
-          bot.send({attachments: [attachments]}, 'delay');
+          bot.send({as_user: false, username: '運行状況', icon_emoji: ':train:', attachments: [attachments]}, 'delay');
         }
       }
     });
